@@ -8,7 +8,7 @@
 - The purpose of O.G. Auto-Recon is to automate the initial information gathering phase and then enumerate based off those results as much as possible.
 - This tool is intended for CTF's and can be fairly noisy. (Not the most stealth conscious tool...)
 - All tools in this project are compliant with the OSCP exam rules.
-- Command syntax can be easily modified in the config/config.yaml settings. \$variable names should remain unchanged.
+- Command syntax can be easily modified in the [Config](../master/config/config.yaml) settings. \$variable names should remain unchanged.
 - If Virtual Host Routing is detected, **O.G. Auto-Recon** will add the host names to your /etc/hosts file and continue to enumerate the newly discovered host names.
 - DNS enumeration is nerfed to ignore .com .co .eu .uk domains etc... since this tool was designed for CTF's like for instance, "hack the box". It will try to find most .htb domains if dns server's are detected..
 - This project use's various stand-alone & custom tools to enumerate a target based off nmap results.
@@ -108,7 +108,10 @@ Or skip web enumeration all together but scan everything else.
 python3 recon.py -t 10.10.10.10 -i dns http httpcms ssl sslcms sort_urls aquatone source
 ```
 
-The remaining services module is dependent on the fulltcp module.
+The remaining services module is also dependent on the topports and or fulltcp module.
+Now you can skip doing a fulltcp scan if the target is slow. However, be advised,
+The UDP nmap scan is bundled with the fulltcp module currently, so skipping fulltcp module
+will result in missing some udp enumeration.
 
 To Scan + Enumerate all IPv4 addr's in ips.txt file
 
@@ -138,7 +141,7 @@ python3 recon.py -t 10.10.10.10 -b ssh -p 2222 -u slickrick
 To ignore certain services from being scanned you can specify the -i , --ignore flag.  
 When specifying multiple services to ignore, services MUST be space delimited. Only ignore topports if you have already ran this module
 as most other modules are dependent on nmap's initial top ports output.
-All the available ignore choices are:
+All the available modules are as follows:
 
 ```text
 http,httpcms,ssl,sslcms,aquatone,smb,dns,ldap,oracle,source,sort_urls,proxy,proxycms,fulltcp,topports,remaining,searchsploit,peaceout,ftpAnonDL,winrm
@@ -152,11 +155,9 @@ python3 recon.py --target 10.10.10.10 --ignore fulltcp http
 
 You can also specify services that you wish to only scan, similar to the --ignore option, the -s, --service option will only scan the service specified.
 Please note that before you can use the -s, --service option, You must have already ran the topports nmap scan as most modules are dependent on nmap's output.
-The remaining services module scan is dependent on fulltcp scan module a.k.a. nmap full tcp scan, so if you are only specifying the -s remaining module,
-make sure that you have already ran the fulltcp module or you could do
 
 ```shell
-python3 recon.py -t 10.10.10.10 -s fulltcp remaining
+python3 recon.py -t 10.10.10.10 -s topports remaining
 ```
 
 ```shell

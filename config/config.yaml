@@ -148,6 +148,10 @@ commands:
     "vhost": "gobuster vhost -u http://$hosts -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -t 100 -o $reportDir/dns/gobuster-vhost-top20k.log"
   ftp:
     "nmapFtp": "nmap -vv -sV -Pn -p $ftpPorts --script=ftp-anon.nse,ftp-bounce.nse,ftp-libopie.nse,ftp-proftpd-backdoor.nse,ftp-vsftpd-backdoor.nse,ftp-vuln-cve2010-4221.nse,ftp-syst.nse -oA $nmapReportDir/ftp $target"
+  ike:
+    "ikescan4500": "ike-scan --sport=4500 --dport=4500 $target | tee $nmapReportDir/ikescan-4500.log"
+    "ikescan": "ike-scan $target | tee $nmapReportDir/ikescan-500.log"
+    "nmapIke": "nmap -Pn -sUV -p 500,4500 --script=ike-version.nse -oA $nmapReportDir/ike-version $target"
   kerberos:
     "nmapKerberos": "nmap -Pn -sV -p $kerberosPorts --script='banner,krb5-enum-users' -oA $nmapReportDir/kerberos $target"
   mongodb:
@@ -202,7 +206,7 @@ commands:
   vnc:
     "nmapVnc": "nmap -Pn -sV -p $vncPorts --script=realvnc-auth-bypass.nse,vnc-info.nse,vnc-title.nse -oA $nmapReportDir/vnc $target"
   vuln:
-    "searchsploit": "echo '[+] $strang' >> $reportDir/vulns/$name.log && searchsploit $strang --exclude='/dos/' >> $reportDir/vulns/$name.log"
+    "searchsploit": 'echo ''[+] "$strang"'' >> $reportDir/vulns/$name.log && searchsploit $strang --exclude=''/dos/'' >> $reportDir/vulns/$name.log'
   john:
     "jcrack": "john $hashfile --wordlist=/usr/share/wordlists/rockyou.txt"
     "jshow": "john --show $hashfile"

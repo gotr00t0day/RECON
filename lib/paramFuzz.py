@@ -25,12 +25,12 @@ class ParamFuzzer:
     def loginator(self, executed_command):
         c = config_parser.CommandParser(f"{os.getcwd()}/config/config.yaml", self.target)
         logging.basicConfig(
-            filename=c.getPath("report", "log"),
+            filename=c.getPath("report", "commandLog"),
             format='%(asctime)s %(message)s',
             datefmt='%m/%d/%Y %I:%M:%S %p',
             level=logging.INFO
         )
-        logging.info(f"[+] {executed_command}")
+        logging.info(f"[+] {executed_command} \n")
 
     @contextlib.contextmanager
     def no_ssl_verification(self):
